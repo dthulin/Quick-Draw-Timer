@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'interface.dart';
+import 'timer.dart';
+import 'player.dart';
 
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 // playGunshot() async {
@@ -15,24 +16,28 @@ import 'package:flutter/material.dart';
 // }
 
 class LandingPage extends StatefulWidget {
-  LandingPage({Key key, this.title}) : super(key: key);
+  LandingPage({Key key, this.title, this.player}) : super(key: key);
 
   final String title;
+  final AudioController player;
 
   @override
-  _LandingPageState createState() => _LandingPageState();
+  _LandingPageState createState() => _LandingPageState(player: player);
 }
 
 class _LandingPageState extends State<LandingPage>
     with SingleTickerProviderStateMixin {
-  AudioCache audioCache = AudioCache();
-  AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+  AudioController player;
+  _LandingPageState({this.player});
+  // AudioCache audioCache = AudioCache();
+  // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   int _shotSpeed = 200;
   int _smokeSpeed = 800;
   int _transitionSpeed = 1000;
   //_transitionSpeed must be higher than _smokeSpeed to ensure _smokeSpeed is finished.
   bool _shot = false;
   bool _hideAimed = false;
+  // AudioController player = new AudioController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +45,9 @@ class _LandingPageState extends State<LandingPage>
     return Scaffold(
       body: InkWell(
         onTap: () async {
-          await audioPlayer.stop();
-          audioPlayer = await audioCache.play('audio/Gunshot.wav');
+          player.playFile('Gunshot');
+          // await audioPlayer.stop();
+          // audioPlayer = await audioCache.play('audio/Gunshot.wav');
           // audioPlayer.play('audio/Intro.wav', isLocal: true);
           new Timer(Duration(milliseconds: _shotSpeed), () {
             setState(() {
@@ -58,15 +64,16 @@ class _LandingPageState extends State<LandingPage>
             new Timer(
               Duration(milliseconds: _transitionSpeed),
               () {
+                player.playFileLoop('Intro');
                 Navigator.push(
                   context,
                   // MaterialPageRoute(
-                  //     builder: (BuildContext context) => InterfacePage())
+                  //     builder: (BuildContext context) => TimerPage(player: player))
                   PageRouteBuilder(
                     transitionDuration:
                         Duration(milliseconds: _transitionSpeed),
                     pageBuilder: (context, animation, secondaryAnimation) =>
-                        InterfacePage(),
+                        TimerPage(player: player),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       var begin = Offset(0.0, 1.0);
