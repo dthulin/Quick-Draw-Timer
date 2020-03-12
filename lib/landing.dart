@@ -2,18 +2,7 @@ import 'dart:async';
 import 'timer.dart';
 import 'player.dart';
 
-// import 'package:audioplayers/audio_cache.dart';
-// import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-
-// playGunshot() async {
-//   int result = await audioPlayer.play('assets/audio/Intro.wav', isLocal: true);
-//       // await audioPlayer.play('assets/audio/Gunshot.wav', isLocal: true);
-//   if (result == 1) {
-//     // success
-//     print('success?');
-//   }
-// }
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key, this.title, this.player}) : super(key: key);
@@ -22,22 +11,17 @@ class LandingPage extends StatefulWidget {
   final AudioController player;
 
   @override
-  _LandingPageState createState() => _LandingPageState(player: player);
+  _LandingPageState createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage>
     with SingleTickerProviderStateMixin {
-  AudioController player;
-  _LandingPageState({this.player});
-  // AudioCache audioCache = AudioCache();
-  // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   int _shotSpeed = 200;
   int _smokeSpeed = 800;
   int _transitionSpeed = 1000;
   //_transitionSpeed must be higher than _smokeSpeed to ensure _smokeSpeed is finished.
   bool _shot = false;
   bool _hideAimed = false;
-  // AudioController player = new AudioController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +29,7 @@ class _LandingPageState extends State<LandingPage>
     return Scaffold(
       body: InkWell(
         onTap: () async {
-          player.playFile('Gunshot');
-          // await audioPlayer.stop();
-          // audioPlayer = await audioCache.play('audio/Gunshot.wav');
-          // audioPlayer.play('audio/Intro.wav', isLocal: true);
+          widget.player.playFile('Gunshot');
           new Timer(Duration(milliseconds: _shotSpeed), () {
             setState(() {
               _shot = !_shot;
@@ -64,16 +45,14 @@ class _LandingPageState extends State<LandingPage>
             new Timer(
               Duration(milliseconds: _transitionSpeed),
               () {
-                player.playFileLoop('Intro');
-                Navigator.push(
+                widget.player.playFileLoop('Intro');
+                Navigator.pushReplacement(
                   context,
-                  // MaterialPageRoute(
-                  //     builder: (BuildContext context) => TimerPage(player: player))
                   PageRouteBuilder(
                     transitionDuration:
                         Duration(milliseconds: _transitionSpeed),
                     pageBuilder: (context, animation, secondaryAnimation) =>
-                        TimerPage(player: player),
+                        TimerPage(player: widget.player),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       var begin = Offset(0.0, 1.0);
@@ -88,24 +67,6 @@ class _LandingPageState extends State<LandingPage>
                         child: child,
                       );
                     },
-                    // transitionsBuilder: (BuildContext context,
-                    //     Animation<double> animation,
-                    //     Animation<double> secondaryAnimation,
-                    //     Widget child) {
-                    //   return SlideTransition(
-                    //     position: new Tween<Offset>(
-                    //       begin: const Offset(-1.0, 0.0),
-                    //       end: Offset.zero,
-                    //     ).animate(animation),
-                    //     child: new SlideTransition(
-                    //       position: new Tween<Offset>(
-                    //         begin: Offset.zero,
-                    //         end: const Offset(-1.0, 0.0),
-                    //       ).animate(secondaryAnimation),
-                    //       child: child,
-                    //     ),
-                    //   );
-                    // },
                   ),
                 );
               },
@@ -120,7 +81,6 @@ class _LandingPageState extends State<LandingPage>
                 'assets/images/Background.png',
                 width: screenSize.width,
                 height: screenSize.height,
-                // fit: BoxFit.fitWidth,
                 fit: BoxFit.fill,
               ),
             ),
@@ -129,7 +89,6 @@ class _LandingPageState extends State<LandingPage>
                 opacity: _hideAimed ? 0.0 : 1.0,
                 child: new Image.asset(
                   'assets/images/Logo_Aimed.png',
-                  // fit: BoxFit.fitWidth,
                 ),
               ),
             ),
@@ -150,36 +109,6 @@ class _LandingPageState extends State<LandingPage>
                 ),
               ),
             ),
-            // InkWell(
-            //   onTap: () async {
-            //     await audioPlayer.stop();
-            //     audioPlayer = await audioCache.play('audio/Gunshot.wav');
-            //     // audioPlayer.play('audio/Intro.wav', isLocal: true);
-            //     setState(() {
-            //       this._shot = !_shot;
-            //     });
-            //   },
-            //   enableFeedback: false,
-            //   child: Center(
-            //     child: AnimatedCrossFade(
-            //       crossFadeState: this._shot
-            //           ? CrossFadeState.showSecond
-            //           : CrossFadeState.showFirst,
-            //       duration: const Duration(seconds: 1),
-            //       // firstCurve: Curves.easeOut,
-            //       // secondCurve: Curves.easeIn,
-            //       // sizeCurve: Curves.bounceOut,
-            //       firstChild: new Image.asset(
-            //         'assets/images/Logo_Aimed.png',
-            //         // fit: BoxFit.fitWidth,
-            //       ),
-            //       secondChild: new Image.asset(
-            //         'assets/images/Logo_Shot.png',
-            //         // fit: BoxFit.fitWidth,
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
