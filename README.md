@@ -1,6 +1,6 @@
 # quick_draw_timer
 
-A new Flutter project.
+A companion app for the Quick Draw card game by Immix Games.
 
 ## Getting Started
 
