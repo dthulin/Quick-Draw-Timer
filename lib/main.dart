@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Quick Draw!',
+      title: 'Quick Draw',
       theme: ThemeData(
         fontFamily: 'Vanilla',
         primarySwatch: Colors.orange,
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: LandingPage(
-        title: 'Quick Draw!',
+        title: 'Quick Draw',
         player: player,
       ),
     );
