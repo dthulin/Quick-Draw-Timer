@@ -1,4 +1,4 @@
-package com.immix.quick_draw_timer
+package com.immix.quick_draw
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
